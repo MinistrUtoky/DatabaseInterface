@@ -2447,6 +2447,7 @@
     "net6.0-windows7.0": [
       "EntityFramework >= 6.4.4",
       "Microsoft.EntityFrameworkCore >= 6.0.9",
+      "Microsoft.EntityFrameworkCore.Analyzers >= 6.0.9",
       "Microsoft.EntityFrameworkCore.Design >= 6.0.9",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.9"
@@ -2459,11 +2460,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Viqtop\\source\\repos\\Database_Interface\\Database_Interface\\Database_Interface.csproj",
+      "projectUniqueName": "C:\\Users\\Viqtop\\source\\repos\\DatabaseInterface\\Database_Interface\\Database_Interface.csproj",
       "projectName": "Database_Interface",
-      "projectPath": "C:\\Users\\Viqtop\\source\\repos\\Database_Interface\\Database_Interface\\Database_Interface.csproj",
+      "projectPath": "C:\\Users\\Viqtop\\source\\repos\\DatabaseInterface\\Database_Interface\\Database_Interface.csproj",
       "packagesPath": "C:\\Users\\Viqtop\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Viqtop\\source\\repos\\Database_Interface\\Database_Interface\\obj\\",
+      "outputPath": "C:\\Users\\Viqtop\\source\\repos\\DatabaseInterface\\Database_Interface\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2505,6 +2506,10 @@
             "target": "Package",
             "version": "[6.0.9, )"
           },
+          "Microsoft.EntityFrameworkCore.Analyzers": {
+            "target": "Package",
+            "version": "[6.0.9, )"
+          },
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",
@@ -2541,7 +2546,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }

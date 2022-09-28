@@ -12,25 +12,30 @@ namespace Database_Interface.classes
 {
     public static class clsDB
     {
-
-        public static void FillDataGrid(DataGrid tableGrid)
+        private static string cn_String = Properties.Settings.Default.connectionString;
+        public static List<string> tableNames = new List<string>();  
+        public static void Tables_Upload()
         {
-
-            string cn_String = Properties.Settings.Default.connectionString;
-            using (SqlConnection con = new SqlConnection(cn_String))
+            using (SqlConnection con = Get_DB_Connection())
+                foreach (DataRow row in con.GetSchema("Tables").Rows) 
+                    tableNames.Add((string)row["TABLE_NAME"]);
+        }
+        public static void FillDataGrid(DataGrid tableGrid, string tableName)
+        {
+            using (SqlConnection con = Get_DB_Connection())
             {
-                string cmdString = "SELECT id, name, description FROM tbl_gay";
+                string cmdString = "SELECT * FROM tbl1";
                 SqlCommand cmd = new SqlCommand(cmdString, con);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("tbl_gay");
+                DataTable dt = new DataTable("tbl1");         
                 sda.Fill(dt);
+                
                 tableGrid.ItemsSource = dt.DefaultView;
             }
         }
 
         public static SqlConnection Get_DB_Connection()
         {
-            string cn_String = Properties.Settings.Default.connectionString;
             SqlConnection cn_connection = new SqlConnection(cn_String);
             if (cn_connection.State != ConnectionState.Open) cn_connection.Open();
             return cn_connection;
@@ -58,7 +63,6 @@ namespace Database_Interface.classes
 
         public static void Close_DB_Connection()
         {
-            string cn_String = Properties.Settings.Default.connectionString;
             SqlConnection cn_connection = new SqlConnection(cn_String);
             if (cn_connection.State != ConnectionState.Closed) cn_connection.Close();
         }

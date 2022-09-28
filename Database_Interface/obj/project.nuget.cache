@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "O/N2AHFKdgqFj8/62wtD9YqDbT86ikz77HBtQtL9g8XTa99vgjBbjW7fGRDbS4O44f/cfvI6V9He0onPRz/rKA==",
+  "dgSpecHash": "+C1JlXTeBC7zUdC2PSeP8lGKeIBZGjXE8JGZayZMTGLFLn5+4lbAtmhcSjMO2hNcTslZ2VHlfilkUimDTkPkGA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Viqtop\\source\\repos\\Database_Interface\\Database_Interface\\Database_Interface.csproj",
+  "projectFilePath": "C:\\Users\\Viqtop\\source\\repos\\DatabaseInterface\\Database_Interface\\Database_Interface.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Viqtop\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\Viqtop\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
