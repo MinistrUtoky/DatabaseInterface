@@ -40,16 +40,17 @@ namespace Database_Interface
 
         private void TableButton_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            currentTableName = (sender as Button).Content.ToString();
+            clsDB.FillDataGrid(tableGrid, currentTableName);
         }
 
         private void DB_Add_Record(string sName, string sDescription)
         {             
-            string sSQL = "SELECT * FROM tbl1 WHERE [name] = '" + sName + "'";
+            string sSQL = "SELECT * FROM " + currentTableName + " WHERE [name] = '" + sName + "'";
             DataTable tbl = clsDB.Get_DataTable(sSQL);
             if (tbl.Rows.Count < 1)
             {
-                string sql_Add = "INSERT INTO tbl1 ([name],[description]) VALUES('" + sName + "','" + sDescription + "')";
+                string sql_Add = "INSERT INTO " + currentTableName + " ([name],[description]) VALUES('" + sName + "','" + sDescription + "')";
                 clsDB.Execute_SQL(sql_Add);
             }
             else
@@ -57,10 +58,10 @@ namespace Database_Interface
                 //make a popup that says you're gaily gay
             }
         }
-
-        private void DB_Update_Record(string sName, string sDescription)
+        // argsList = id, name. description eg
+        private void DB_Update_Record(List<string> argsList)
         {
-            string sSQL = "SELECT * FROM tbl1 WHERE [name] = '" + sName + "'";
+            string sSQL = "SELECT * FROM " + currentTableName + " WHERE [name] = '" + argsList[1] + "'";
             DataTable tbl = clsDB.Get_DataTable(sSQL);
             if (tbl.Rows.Count < 1)
             {
@@ -68,8 +69,8 @@ namespace Database_Interface
             }
             else
             {
-                string ID = tbl.Rows[0]["id"].ToString();
-                string sql_Update = "UPDATE tbl1 SET [name] = \'GAY\' WHERE id = '" + ID + "'";
+                string ID = tbl.Rows[0][argsList[0]].ToString();
+                string sql_Update = "UPDATE " + currentTableName + " SET [name] = \'GAY\' WHERE id = '" + ID + "'";
                 clsDB.Execute_SQL(sql_Update);
             }
         }
@@ -82,7 +83,7 @@ namespace Database_Interface
 
         private void Update_Button_Click(object sender, RoutedEventArgs e)
         {
-            DB_Update_Record("gay?", "REALLY GAY");
+            DB_Update_Record({ "gay?", "REALLY GAY" });
             clsDB.FillDataGrid(tableGrid, currentTableName);
         }
     }

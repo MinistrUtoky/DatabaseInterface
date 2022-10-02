@@ -13,21 +13,22 @@ namespace Database_Interface.classes
     public static class clsDB
     {
         private static string cn_String = Properties.Settings.Default.connectionString;
-        public static List<string> tableNames = new List<string>();  
+        public static List<string> tableNames = new List<string>();
         public static void Tables_Upload()
         {
             using (SqlConnection con = Get_DB_Connection())
                 foreach (DataRow row in con.GetSchema("Tables").Rows) 
                     tableNames.Add((string)row["TABLE_NAME"]);
         }
+
         public static void FillDataGrid(DataGrid tableGrid, string tableName)
         {
             using (SqlConnection con = Get_DB_Connection())
             {
-                string cmdString = "SELECT * FROM tbl1";
+                string cmdString = "SELECT * FROM " + tableName;
                 SqlCommand cmd = new SqlCommand(cmdString, con);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("tbl1");         
+                DataTable dt = new DataTable(tableName);         
                 sda.Fill(dt);
                 
                 tableGrid.ItemsSource = dt.DefaultView;
@@ -51,8 +52,6 @@ namespace Database_Interface.classes
             adapter.Fill(table);
             return table;
         }
-
-
 
         public static void Execute_SQL(string SQL_Text)
         {
