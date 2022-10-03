@@ -45,7 +45,7 @@ namespace Database_Interface
         }
 
         private void DB_Add_Record(string sName, string sDescription)
-        {             
+        {
             string sSQL = "SELECT * FROM " + currentTableName + " WHERE [name] = '" + sName + "'";
             DataTable tbl = clsDB.Get_DataTable(sSQL);
             if (tbl.Rows.Count < 1)
@@ -59,9 +59,9 @@ namespace Database_Interface
             }
         }
         // argsList = id, name. description eg
-        private void DB_Update_Record(List<string> argsList)
+        private void DB_Update_Record(string sName, string sDescription)
         {
-            string sSQL = "SELECT * FROM " + currentTableName + " WHERE [name] = '" + argsList[1] + "'";
+            string sSQL = "SELECT * FROM " + currentTableName + " WHERE [name] = '" + sName + "'";
             DataTable tbl = clsDB.Get_DataTable(sSQL);
             if (tbl.Rows.Count < 1)
             {
@@ -69,22 +69,48 @@ namespace Database_Interface
             }
             else
             {
-                string ID = tbl.Rows[0][argsList[0]].ToString();
+                string ID = tbl.Rows[0]["id"].ToString();
                 string sql_Update = "UPDATE " + currentTableName + " SET [name] = \'GAY\' WHERE id = '" + ID + "'";
                 clsDB.Execute_SQL(sql_Update);
             }
         }
+        
+        private void DB_Remove_Record(string id)
+        {             
+        }
 
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
+            Add_Popup.IsOpen = true;
             DB_Add_Record("gay?", "REALLY GAY");
             clsDB.FillDataGrid(tableGrid, currentTableName);
         }
 
         private void Update_Button_Click(object sender, RoutedEventArgs e)
         {
-            DB_Update_Record({ "gay?", "REALLY GAY" });
+            Update_Popup.IsOpen = true;
+            DB_Update_Record("gay?", "REALLY GAY");
             clsDB.FillDataGrid(tableGrid, currentTableName);
         }
+
+
+        private void Remove_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Remove_Popup.IsOpen = true;
+            DB_Remove_Record("0");
+        }
+
+        private void Close_Add_Popup(object sender, RoutedEventArgs e)
+        {
+            Add_Popup.IsOpen = false;
+        }
+        private void Close_Update_Popup(object sender, RoutedEventArgs e)
+        {
+            Update_Popup.IsOpen = false;
+        }
+        private void Close_Remove_Popup(object sender, RoutedEventArgs e)
+        {             
+            Remove_Popup.IsOpen = false;
+        }       
     }
 }
