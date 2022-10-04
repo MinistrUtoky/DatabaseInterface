@@ -172,6 +172,7 @@ namespace Database_Interface
         {
             Remove_Popup.IsOpen = true;
             DB_Remove_Record("0");
+            Refresh_Table();
         }
 
         private void Close_Add_Popup(object sender, RoutedEventArgs e)
