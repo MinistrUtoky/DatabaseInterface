@@ -67,14 +67,14 @@
             <TreeView x:Name="tableNamesTree" Grid.Row="1">
             </TreeView>
             <DataGrid x:Name="tableGrid" Grid.Column="1" IsReadOnly="True"/>
-            <Popup x:Name="Add_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False">
+            <Popup x:Name="Add_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False" StaysOpen="False">
                 <StackPanel>
                     <TextBlock Background="LightBlue">Write down all you want to add:</TextBlock>
                     <!-- There should appear the field for each column in the table -->
                     <Button Click="Close_Add_Popup" Content="Add" />
                 </StackPanel>
             </Popup>
-            <Popup x:Name="Update_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False">
+            <Popup x:Name="Update_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False" StaysOpen="False">
                 <StackPanel>
                     <TextBlock TextWrapping="Wrap" Background="LightBlue">Write down id of an element to update:</TextBlock>
                     <TextBox/>                
@@ -82,7 +82,7 @@
                     <Button Click="Close_Update_Popup" Content="Update" />
                 </StackPanel>
             </Popup>
-            <Popup x:Name="Remove_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False">
+            <Popup x:Name="Remove_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False" StaysOpen="False">
                 <StackPanel>
                     <TextBlock TextWrapping="Wrap" Background="LightBlue">Write down id of an element to remove:</TextBlock>
                     <TextBox/>
