@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -59,6 +60,10 @@ namespace Database_Interface
         {
             StackPanel sp = new StackPanel();
             Add_Popup.Child = sp;
+            Button cancel = new Button();
+            cancel.Click += Clear_Addition_Click;
+            cancel.Content = "Cancel";
+            sp.Children.Add(cancel);
             DataColumnCollection dcc = clsDB.Get_DataTable("SELECT * FROM " + currentTableName).Columns;
             dcc.RemoveAt(0);
             foreach (DataColumn c in dcc)
@@ -71,7 +76,8 @@ namespace Database_Interface
                 sp.Children.Add(tbx);
             }
             Button b = new Button();
-            b.Click += Close_Add_Popup;
+            b.Click += Enact_Add_Popup;
+            b.Click += Clear_Addition_Click;
             b.Content = "Add";
             sp.Children.Add(b);
         }
@@ -80,6 +86,10 @@ namespace Database_Interface
         {
             StackPanel sp = new StackPanel();
             Update_Popup.Child = sp;
+            Button cancel = new Button();
+            cancel.Click += Clear_Update_Click;
+            cancel.Content = "Cancel";
+            sp.Children.Add(cancel);
             foreach (DataColumn c in clsDB.Get_DataTable("SELECT * FROM " + currentTableName).Columns)
             {
                 columnNames.Add(c.ToString()); // just dont wanna run the whole process again ahah
@@ -91,24 +101,69 @@ namespace Database_Interface
                 sp.Children.Add(tbx);
             }
             Button b = new Button();
-            b.Click += Close_Update_Popup;
+            b.Click += Enact_Update_Popup;
+            b.Click += Clear_Update_Click;
             b.Content = "Update";
             sp.Children.Add(b);
         }
+
         private void Remove_Popup_Filling()
         {
             StackPanel sp = new StackPanel();
             Remove_Popup.Child = sp;
+            Button cancel = new Button();
+            cancel.Click += Clear_Removal_Click;
+            cancel.Content = "Cancel";
+            sp.Children.Add(cancel);
             TextBlock tb = new TextBlock();
             TextBox tbx = new TextBox();
             tb.Text = clsDB.Get_DataTable("SELECT * FROM " + currentTableName).Columns[0].ToString();
             tb.Background = Brushes.White;
             Button b = new Button();
-            b.Click += Close_Remove_Popup;
+            b.Click += Enact_Remove_Popup;
+            b.Click += Clear_Removal_Click;
             b.Content = "Remove";
             sp.Children.Add(tb); sp.Children.Add(tbx); sp.Children.Add(b);
         }
 
+        // Redo popup fillers as one common filler
+
+        private void Clear_Popup(Popup popup)
+        {
+            popup.IsOpen = false;
+            if (popup.Child.GetType() == typeof(StackPanel))
+            {
+                StackPanel sp = (popup.Child as StackPanel);
+                foreach (object ch in sp.Children)
+                {
+                    if (ch.GetType() == typeof(TextBox))
+                    {
+                        TextBox t = (ch as TextBox);
+                        t.Text = "";
+                    }
+                }
+            }
+        }
+
+        private List<string> Enact_Popup(Popup popup)
+        {
+            List<string> l = new List<string>();
+            if (popup.Child.GetType() == typeof(StackPanel))
+            {
+                StackPanel sp = (popup.Child as StackPanel);
+                foreach (object ch in sp.Children)
+                {
+                    if (ch.GetType() == typeof(TextBox))
+                    {
+                        TextBox t = (ch as TextBox);
+                        l.Add(t.Text);
+                    }
+                }
+                return l;
+            }
+            return null;
+        }
+        
         private void Popups_Filling()
         {
             Add_Popup_Filling();
@@ -117,25 +172,40 @@ namespace Database_Interface
         }
 
 
-        private void DB_Add_Record(string sName, string sDescription)
+        private void DB_Add_Record(List<string> new_element)
         {
-            string sSQL = "SELECT * FROM " + currentTableName + " WHERE [name] = '" + sName + "'";
-            DataTable tbl = clsDB.Get_DataTable(sSQL);
-            if (tbl.Rows.Count < 1)
+            StringBuilder fields = new StringBuilder();
+            for (int i = 1; i < columnNames.Count-1; i++)
             {
-                string sql_Add = "INSERT INTO " + currentTableName + " ([name],[description]) VALUES('" + sName + "','" + sDescription + "')";
-                clsDB.Execute_SQL(sql_Add);
+                fields.Append("[");
+                fields.Append(columnNames[i]);
+                fields.Append("]");
+                fields.Append(",");
             }
-            else
+            fields.Append("[");
+            fields.Append(columnNames[columnNames.Count - 1]);
+            fields.Append("]");
+
+            StringBuilder values = new StringBuilder();
+            for (int i = 0; i < new_element.Count - 1; i++)
             {
-                //make a popup that says you're gaily gay
+                values.Append("'");
+                values.Append(new_element[i]);
+                values.Append("'");
+                values.Append(",");
             }
+            values.Append("'");
+            values.Append(new_element[new_element.Count - 1]);
+            values.Append("'");
+
+            string sql_Add = "INSERT INTO " + currentTableName + " (" + fields + ") VALUES(" + values + ")";
+            clsDB.Execute_SQL(sql_Add);
         }
 
         // argsList = id, name. description eg
-        private void DB_Update_Record(string sName, string sDescription)
+        private void DB_Update_Record(List<string> element_to_update)
         {
-            string sSQL = "SELECT * FROM " + currentTableName + " WHERE [name] = '" + sName + "'";
+            string sSQL = "SELECT * FROM " + currentTableName + " WHERE [" + columnNames[0] + "] = '" + element_to_update[0] + "'";
             DataTable tbl = clsDB.Get_DataTable(sSQL);
             if (tbl.Rows.Count < 1)
             {
@@ -143,49 +213,80 @@ namespace Database_Interface
             }
             else
             {
-                string ID = tbl.Rows[0]["id"].ToString();
-                string sql_Update = "UPDATE " + currentTableName + " SET [name] = \'GAY\' WHERE id = '" + ID + "'";
-                clsDB.Execute_SQL(sql_Update);
+                for (int i = 1; i < element_to_update.Count; i++)
+                {
+                    string sql_Update = "UPDATE " + currentTableName + " SET [" + columnNames[i] + "] = '" + element_to_update[i] + "' WHERE [" + columnNames[0] + "] = '" + element_to_update[0] + "'";
+                    clsDB.Execute_SQL(sql_Update);
+                }
             }
         }
         
         private void DB_Remove_Record(string id)
         {             
+
         }
 
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
             Add_Popup.IsOpen = true;
-            //DB_Add_Record("gay?", "REALLY GAY");
             Refresh_Table();
         }
 
         private void Update_Button_Click(object sender, RoutedEventArgs e)
         {
             Update_Popup.IsOpen = true;
-            //DB_Update_Record("gay?", "REALLY GAY");
             Refresh_Table();
         }
-
 
         private void Remove_Button_Click(object sender, RoutedEventArgs e)
         {
             Remove_Popup.IsOpen = true;
             DB_Remove_Record("0");
+        }
+
+        private void Enact_Add_Popup(object sender, RoutedEventArgs e)
+        {            
+            List<string> l = Enact_Popup(Add_Popup);
+            if (l == null) throw new Exception("addlist was null");
+            if (l.Count == 0) throw new Exception("you cant add nothing");
+            DB_Add_Record(l);
             Refresh_Table();
         }
 
-        private void Close_Add_Popup(object sender, RoutedEventArgs e)
+        private void Enact_Update_Popup(object sender, RoutedEventArgs e)
         {
-            Add_Popup.IsOpen = false;
+            List<string> l = Enact_Popup(Update_Popup);
+            if (l == null) throw new Exception("updatelist was null");
+            if (l.Count == 0) throw new Exception("no such an element");
+            if (!int.TryParse(l[0], out int a)) throw new Exception("id have to be an integer");
+            DB_Update_Record(l);
+            Refresh_Table();
         }
-        private void Close_Update_Popup(object sender, RoutedEventArgs e)
+
+        private void Enact_Remove_Popup(object sender, RoutedEventArgs e)
         {
-            Update_Popup.IsOpen = false;
+            List<string> l = Enact_Popup(Remove_Popup);
+            if (l == null) throw new Exception("removallist was null");
+            if (l.Count == 0) throw new Exception("no element to remove");
+            if (!int.TryParse(l[0], out int a)) throw new Exception("id have to be an integer");
+            //probably better to forbid the empty element but whatever
+            DB_Remove_Record(l[0]);
+            Refresh_Table();
         }
-        private void Close_Remove_Popup(object sender, RoutedEventArgs e)
-        {             
-            Remove_Popup.IsOpen = false;
-        }       
+
+        private void Clear_Addition_Click(object sender, RoutedEventArgs e)
+        {
+            Clear_Popup(Add_Popup);
+        }
+
+        private void Clear_Update_Click(object sender, RoutedEventArgs e)
+        {
+            Clear_Popup(Update_Popup);
+        }
+
+        private void Clear_Removal_Click(object sender, RoutedEventArgs e)
+        {
+            Clear_Popup(Remove_Popup);
+        }
     }
 }
