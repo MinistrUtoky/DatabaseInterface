@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Database_Interface
@@ -50,7 +51,7 @@ namespace Database_Interface
 
         private void TableButton_Click(object sender, RoutedEventArgs e)
         {
-
+            columnNames.Clear();
             currentTableName = (sender as Button).Content.ToString();
             Popups_Filling();
             Refresh_Table();
@@ -80,6 +81,56 @@ namespace Database_Interface
             b.Click += Clear_Addition_Click;
             b.Content = "Add";
             sp.Children.Add(b);
+        }
+
+        private void New_Table_subPopup_Filling()
+        {
+            
+            StackPanel sp = new StackPanel();
+            New_Table_subPopup.Child = sp;
+            Button cancel = new Button();
+            cancel.Click += Clear_New_Table_subPopup_Click;
+            cancel.Content = "Cancel";
+            sp.Children.Add(cancel);
+            TextBlock tb = new TextBlock();
+            TextBox tbx = new TextBox();
+            tb.Text = "How many columns do you need?";
+            tb.Background = Brushes.White;
+            sp.Children.Add(tb);
+            sp.Children.Add(tbx);
+            Button b = new Button();
+            b.Click += Enact_New_Table_subPopup;
+            b.Click += Clear_New_Table_subPopup_Click;
+            b.Content = "Continue";
+            sp.Children.Add(b);
+        }
+
+        private void New_Table_Popup_Filling(int columns_count)
+        {
+            StackPanel sp = new StackPanel();
+            New_Table_Popup.Child = sp;
+            Button cancel = new Button();
+            cancel.Click += Clear_New_Table_Popup_Click;
+            cancel.Content = "Cancel";
+            sp.Children.Add(cancel);
+            for (int i = 0; i < columns_count; i++)
+            {
+
+            }
+            /*foreach (DataColumn c in clsDB.Get_DataTable("SELECT * FROM " + currentTableName).Columns)
+            {
+                TextBlock tb = new TextBlock();
+                TextBox tbx = new TextBox();
+                tb.Text = c.ToString();
+                tb.Background = Brushes.White;
+                sp.Children.Add(tb);
+                sp.Children.Add(tbx);
+            }
+            //b.Click += Enact_New_Table_Popup;*/
+            Button b = new Button();
+            b.Content = "Create Table";
+            sp.Children.Add(b);
+            b.Click += Clear_New_Table_Popup_Click;
         }
 
         private void Update_Popup_Filling()
@@ -144,28 +195,10 @@ namespace Database_Interface
                 }
             }
         }
-
-        private List<string> Enact_Popup(Popup popup)
-        {
-            List<string> l = new List<string>();
-            if (popup.Child.GetType() == typeof(StackPanel))
-            {
-                StackPanel sp = (popup.Child as StackPanel);
-                foreach (object ch in sp.Children)
-                {
-                    if (ch.GetType() == typeof(TextBox))
-                    {
-                        TextBox t = (ch as TextBox);
-                        l.Add(t.Text);
-                    }
-                }
-                return l;
-            }
-            return null;
-        }
         
         private void Popups_Filling()
         {
+            New_Table_subPopup_Filling();
             Add_Popup_Filling();
             Update_Popup_Filling();
             Remove_Popup_Filling();
@@ -220,35 +253,54 @@ namespace Database_Interface
                 }
             }
         }
-        
+
         private void DB_Remove_Record(string id)
-        {             
+        {
+            string sSQL = "SELECT * FROM " + currentTableName + " WHERE [" + columnNames[0] + "] = '" + id + "'";
+            DataTable tbl = clsDB.Get_DataTable(sSQL);
+            if (tbl.Rows.Count > 0)
+            {
+                string sql_Remove = "DELETE FROM " + currentTableName + " WHERE [" + columnNames[0] + "] = '" + id + "'";
+                clsDB.Execute_SQL(sql_Remove);
+            }
+            else
+            {
+                //a popup saying fk u
+            }
+        }
+
+
+
+        private void DB_New_Table(string name, List<string> column_names)
+        {
 
         }
 
-        private void Add_Button_Click(object sender, RoutedEventArgs e)
-        {
-            Add_Popup.IsOpen = true;
-            Refresh_Table();
-        }
 
-        private void Update_Button_Click(object sender, RoutedEventArgs e)
+        private List<string> Enact_Popup(Popup popup)
         {
-            Update_Popup.IsOpen = true;
-            Refresh_Table();
-        }
-
-        private void Remove_Button_Click(object sender, RoutedEventArgs e)
-        {
-            Remove_Popup.IsOpen = true;
-            DB_Remove_Record("0");
+            List<string> l = new List<string>();
+            if (popup.Child.GetType() == typeof(StackPanel))
+            {
+                StackPanel sp = (popup.Child as StackPanel);
+                foreach (object ch in sp.Children)
+                {
+                    if (ch.GetType() == typeof(TextBox))
+                    {
+                        TextBox t = (ch as TextBox);
+                        l.Add(t.Text);
+                    }
+                }
+                return l;
+            }
+            return null;
         }
 
         private void Enact_Add_Popup(object sender, RoutedEventArgs e)
-        {            
+        {
             List<string> l = Enact_Popup(Add_Popup);
             if (l == null) throw new Exception("addlist was null");
-            if (l.Count == 0) throw new Exception("you cant add nothing");
+            if (l.Count == 0) throw new Exception("no textboxes in popup");
             DB_Add_Record(l);
             Refresh_Table();
         }
@@ -257,7 +309,7 @@ namespace Database_Interface
         {
             List<string> l = Enact_Popup(Update_Popup);
             if (l == null) throw new Exception("updatelist was null");
-            if (l.Count == 0) throw new Exception("no such an element");
+            if (l.Count == 0) throw new Exception("no textboxes in popup");
             if (!int.TryParse(l[0], out int a)) throw new Exception("id have to be an integer");
             DB_Update_Record(l);
             Refresh_Table();
@@ -267,11 +319,50 @@ namespace Database_Interface
         {
             List<string> l = Enact_Popup(Remove_Popup);
             if (l == null) throw new Exception("removallist was null");
-            if (l.Count == 0) throw new Exception("no element to remove");
+            if (l.Count == 0) throw new Exception("no textboxes in popup");
             if (!int.TryParse(l[0], out int a)) throw new Exception("id have to be an integer");
             //probably better to forbid the empty element but whatever
             DB_Remove_Record(l[0]);
             Refresh_Table();
+        }
+
+        private void Enact_New_Table_subPopup(object sender, RoutedEventArgs e)
+        {
+            List<string> l = Enact_Popup(New_Table_subPopup);
+            if (l == null) throw new Exception("newtable count list was null");
+            if (l.Count == 0) throw new Exception("no textboxes in popup");
+            if (!int.TryParse(l[0], out int a)) throw new Exception("number of columns have to be an integer");
+            New_Table_Popup_Filling(int.Parse(l[0]));
+            New_Table_Popup.IsOpen = true;
+        }
+
+        private void Enact_New_Table_Popup(object sender, RoutedEventArgs e)
+        {
+            List<string> l = Enact_Popup(New_Table_Popup);
+            if (l == null) throw new Exception("newtable list was null");
+            // also need to check if the table with the name exists
+            string name = l[0];
+            l.RemoveAt(0);
+            DB_New_Table(name, l);
+        }
+
+        private void Add_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Add_Popup.IsOpen = true;
+        }
+
+        private void Update_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Update_Popup.IsOpen = true;
+        }
+
+        private void Remove_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Remove_Popup.IsOpen = true;
+        }
+        private void Add_New_Table_Button_Click(object sender, RoutedEventArgs e)
+        {
+            New_Table_subPopup.IsOpen = true;  
         }
 
         private void Clear_Addition_Click(object sender, RoutedEventArgs e)
@@ -287,6 +378,16 @@ namespace Database_Interface
         private void Clear_Removal_Click(object sender, RoutedEventArgs e)
         {
             Clear_Popup(Remove_Popup);
+        }
+
+        private void Clear_New_Table_Popup_Click(object sender, RoutedEventArgs e)
+        {
+            Clear_Popup(New_Table_Popup);
+        }
+
+        private void Clear_New_Table_subPopup_Click(object sender, RoutedEventArgs e)
+        {
+            Clear_Popup(New_Table_subPopup);
         }
     }
 }

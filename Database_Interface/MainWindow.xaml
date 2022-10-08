@@ -56,6 +56,7 @@
             <Button x:Name="addButton" Content="Add" Grid.Column="2" Click="Add_Button_Click"/>
             <Button Content="Remove" Grid.Column="3" Click="Remove_Button_Click"/>
             <Button Content="Update" Grid.Column="4" Click="Update_Button_Click"/>
+            <Button Click="Add_New_Table_Button_Click" Grid.Column="1" Content="+" HorizontalAlignment="Right" Width="20" Height="20" VerticalAlignment="Center" Background="Transparent" BorderThickness="0"/>
         </Grid>
 
         <Grid x:Name="databaseInfoGrid" Grid.Row="2">
@@ -72,6 +73,10 @@
             <Popup x:Name="Update_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False">
             </Popup>
             <Popup x:Name="Remove_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False">
+            </Popup>
+            <Popup x:Name="New_Table_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False">
+            </Popup>
+            <Popup x:Name="New_Table_subPopup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False">
             </Popup>
         </Grid>
     </Grid>
