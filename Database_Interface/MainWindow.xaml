@@ -68,15 +68,15 @@
             <TreeView x:Name="tableNamesTree" Grid.Row="1">
             </TreeView>
             <DataGrid x:Name="tableGrid" Grid.Column="1" IsReadOnly="True"/>
-            <Popup x:Name="Add_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False">
+            <Popup x:Name="Add_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False" StaysOpen="False">
             </Popup>
-            <Popup x:Name="Update_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False">
+            <Popup x:Name="Update_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False" StaysOpen="False">
             </Popup>
-            <Popup x:Name="Remove_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False">
+            <Popup x:Name="Remove_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False" StaysOpen="False">
             </Popup>
-            <Popup x:Name="New_Table_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False">
+            <Popup x:Name="New_Table_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False" StaysOpen="False">
             </Popup>
-            <Popup x:Name="New_Table_subPopup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False">
+            <Popup x:Name="New_Table_subPopup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False" StaysOpen="False">
             </Popup>
         </Grid>
     </Grid>
