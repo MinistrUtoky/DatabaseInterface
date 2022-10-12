@@ -133,16 +133,8 @@ namespace Database_Interface
                 if (i == 1) tb.Text = i.ToString() + " column" + " (PRIMARY KEY)";
                 else tb.Text = i.ToString() + " column";
                 tb.Background = Brushes.White;
-                Expander ex = new Expander();
-                ListBox lb = new ListBox();
-                for (int h = 0; h < 4; h++) {
-                    TextBlock tbb = new TextBlock(); tbb.Text = "text"; tbb.Background = Brushes.White;
-                    lb.Items.Add(tbb);
-                }
-                ex.Content = lb;
                 sp.Children.Add(tb);
                 sp.Children.Add(tbx);
-                sp.Children.Add(ex);
             }
             Button b = new Button();
             b.Content = "Create Table";
