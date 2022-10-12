@@ -370,7 +370,10 @@ namespace Database_Interface
 
         private void Remove_Button_Click(object sender, RoutedEventArgs e) => Remove_Popup.IsOpen = true;
 
-        private void Add_New_Table_Button_Click(object sender, RoutedEventArgs e) => New_Table_subPopup.IsOpen = true;  
+        private void Add_New_Table_Button_Click(object sender, RoutedEventArgs e) => New_Table_subPopup.IsOpen = true;
+        private void Nope_Click(object sender, RoutedEventArgs e) => (sender as Button).Content = "Nope";
+        private void Help_Click(object sender, RoutedEventArgs e) => Jss.IsOpen=true;
+        private void Thanks_Click(object sender, RoutedEventArgs e) => Jss.IsOpen = false;
 
         private void Clear_Addition_Click(object sender, RoutedEventArgs e) => Clear_Popup(Add_Popup);
 
@@ -381,5 +384,6 @@ namespace Database_Interface
         private void Clear_New_Table_Popup_Click(object sender, RoutedEventArgs e) => Clear_Popup(New_Table_Popup);
 
         private void Clear_New_Table_subPopup_Click(object sender, RoutedEventArgs e) => Clear_Popup(New_Table_subPopup);
+
     }
 }

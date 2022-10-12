@@ -31,10 +31,10 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="Database" Grid.Column="0"/>
-            <Button Content="Tools" Grid.Column="1" />
-            <Button Content="Options" Grid.Column="2"/>
-            <Button Content="Help" Grid.Column="3"/>
+            <Button Content="Database" Grid.Column="0" Click="Nope_Click"/>
+            <Button Content="Tools" Grid.Column="1" Click="Nope_Click"/>
+            <Button Content="Options" Grid.Column="2" Click="Nope_Click"/>
+            <Button Content="Help" Grid.Column="3" Click="Help_Click"/>
         </Grid>
 
         <Grid x:Name="headGrid"  Grid.Row="1">
@@ -77,6 +77,12 @@
             <Popup x:Name="New_Table_Popup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False" StaysOpen="False">
             </Popup>
             <Popup x:Name="New_Table_subPopup" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="200" IsOpen="False" StaysOpen="False">
+            </Popup>
+            <Popup x:Name="Jss" Placement="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="300" IsOpen="False" StaysOpen="False">
+                <DockPanel Width="Auto" Height="Auto">
+                    <Image Source="/pictures/js.jpg"></Image>
+                    <Button Content="Thanks" Click="Thanks_Click"></Button>
+                </DockPanel>
             </Popup>
         </Grid>
     </Grid>
