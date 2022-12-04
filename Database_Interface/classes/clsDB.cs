@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -7,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using System.Windows.Controls;
+using System.Reflection;
 
 namespace Database_Interface.classes
 {
     public static class clsDB
     {
-        private static string cn_String = Properties.Settings.Default.connectionString;
+        private static string cn_String;
         public static List<string> tableNames = new List<string>();
         public static void Tables_Upload()
         {
@@ -37,6 +39,7 @@ namespace Database_Interface.classes
 
         public static SqlConnection Get_DB_Connection()
         {
+            cn_String = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=" + Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"\data\dbTest.mdf; Integrated Security=True;"; 
             SqlConnection cn_connection = new SqlConnection(cn_String);
             if (cn_connection.State != ConnectionState.Open) cn_connection.Open();
             return cn_connection;

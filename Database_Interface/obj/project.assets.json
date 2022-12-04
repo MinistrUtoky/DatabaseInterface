@@ -2460,11 +2460,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Viqtop\\source\\repos\\DatabaseInterface\\Database_Interface\\Database_Interface.csproj",
+      "projectUniqueName": "C:\\Users\\Viqtop\\DatabaseInterface\\Database_Interface\\Database_Interface.csproj",
       "projectName": "Database_Interface",
-      "projectPath": "C:\\Users\\Viqtop\\source\\repos\\DatabaseInterface\\Database_Interface\\Database_Interface.csproj",
+      "projectPath": "C:\\Users\\Viqtop\\DatabaseInterface\\Database_Interface\\Database_Interface.csproj",
       "packagesPath": "C:\\Users\\Viqtop\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Viqtop\\source\\repos\\DatabaseInterface\\Database_Interface\\obj\\",
+      "outputPath": "C:\\Users\\Viqtop\\DatabaseInterface\\Database_Interface\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
